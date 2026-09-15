@@ -1,15 +1,56 @@
-name: test
+name: Refresh PLACSP
 
-on: workflow_dispatch
+on:
+
+  push:
+  
+    paths: ['.github/workflows/refresh-data.yml','scripts/refresh_placsp.py']
+    
+  schedule: [{cron: '17 */6 * * *'}]
+  
+  workflow_dispatch:
+  
+permissions: {contents: write}
 
 jobs:
 
-  test:
+  refresh:
   
     runs-on: ubuntu-latest
     
     steps:
     
-      - run: echo ok
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-python@v5
+      
+        with: {python-version: '3.12'}
+        
+      - run: python scripts/refresh_placsp.py
+      
+      - run: |
+      
+          git config user.name github-actions[bot]
+          
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          
+          git add data/ index.html
+          
+          git diff --cached --quiet || git commit -m 'data: refresh PLACSP'
+          
+          git push
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
