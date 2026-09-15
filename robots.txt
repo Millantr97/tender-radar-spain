@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://millantr97.github.io/tender-radar-spain/sitemap.xml
